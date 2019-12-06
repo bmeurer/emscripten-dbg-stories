@@ -4,6 +4,8 @@ SOURCE_MAP_BASE=http://localhost:$(PORT)/
 
 DISTDIR=dist
 TARGETS= \
+	$(DISTDIR)/crbug-837572.c \
+	$(DISTDIR)/crbug-837572.html \
 	$(DISTDIR)/crbug-887384.c \
 	$(DISTDIR)/crbug-887384.html \
 	$(DISTDIR)/hello.html \
@@ -17,6 +19,12 @@ $(DISTDIR):
 
 $(DISTDIR)/index.html: index.html
 	cp $< $@
+
+$(DISTDIR)/crbug-837572.c: crbug-837572.c
+	cp $< $@
+
+$(DISTDIR)/crbug-837572.html: crbug-837572.c
+	$(EMCC) -g4 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
 
 $(DISTDIR)/crbug-887384.c: crbug-887384.c
 	cp $< $@
