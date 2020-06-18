@@ -8,6 +8,7 @@ TARGETS= \
 	$(DISTDIR)/crbug-837572.html \
 	$(DISTDIR)/crbug-887384.c \
 	$(DISTDIR)/crbug-887384.html \
+	$(DISTDIR)/fibonacci.html \
 	$(DISTDIR)/hello.html \
 	$(DISTDIR)/hello-threads.html \
 	$(DISTDIR)/index.html
@@ -31,6 +32,9 @@ $(DISTDIR)/crbug-887384.c: crbug-887384.c
 
 $(DISTDIR)/crbug-887384.html: crbug-887384.c
 	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
+
+$(DISTDIR)/fibonacci.html: fibonacci.c
+	$(EMCC) -g -o $@ $<
 
 $(DISTDIR)/hello.html: hello.c
 	$(EMCC) -g -o $@ $<
