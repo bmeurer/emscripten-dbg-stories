@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Step with state</title>
+    <script src="stepping-with-state.js"></script>
+  </head>
+  <body>
+    <h1>Stepping in original source with state</h1>
+    <p>
+      This tests that we can successfully complete a debugging session with source maps, including
+      setting breakpoints, deleting breakpoints, and stepping.
+    </p>
+
+    <h2>Steps</h2>
+
+    <p>
+      <ol>
+        <li>Open DevTools</li>
+        <li>Open stepping-with-state.c</li>
+        <li>Set a breakpoint at function <code>main</code> on line <code>int n = 10</code></li>
+        <li>Reload</li>
+        <li>Breakpoint should hit set breakpoint</li>
+        <li>Step a few times until the next line is hit</li>
+        <li>Remove breakpoint</li>
+        <li>Set a breakpoint at function <code>multiplyByConstant</code> on line <code>for (int i = 0; i < length; ++i) {</code></li>
+        <li>Reload</li>
+        <li>Breakpoint should hit the new breakpoint</li>
+        <li>Step a few times and inspect the wasm variables in the scope view</li>
+        <li>Remove breakpoint</li> 
+        <li>Resume</li>
+      </ol>
+    </p>
+  </body>
+</html>
