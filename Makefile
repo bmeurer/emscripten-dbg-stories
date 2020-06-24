@@ -8,8 +8,11 @@ TARGETS= \
 	$(DISTDIR)/crbug-837572.html \
 	$(DISTDIR)/crbug-887384.c \
 	$(DISTDIR)/crbug-887384.html \
+	$(DISTDIR)/fibonacci.c \
 	$(DISTDIR)/fibonacci.html \
+	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
+	$(DISTDIR)/hello-threads.c \
 	$(DISTDIR)/hello-threads.html \
 	$(DISTDIR)/index.html \
 	$(DISTDIR)/stepping-with-state.c \
@@ -37,13 +40,13 @@ $(DISTDIR)/crbug-887384.html: crbug-887384.c
 	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
 
 $(DISTDIR)/fibonacci.html: fibonacci.c
-	$(EMCC) -g -o $@ $<
+	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/hello.html: hello.c
-	$(EMCC) -g -o $@ $<
+	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
-	$(EMCC) -g -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
+	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
 
 $(DISTDIR)/stepping-with-state.js: stepping-with-state.c
 	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
