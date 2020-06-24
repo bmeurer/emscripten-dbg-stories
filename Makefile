@@ -1,6 +1,6 @@
 EMCC?=emcc
 PORT?=4000
-SOURCE_MAP_BASE=http://localhost:$(PORT)/
+SOURCE_MAP_BASE?=http://localhost:$(PORT)/
 
 DISTDIR=dist
 TARGETS= \
