@@ -15,6 +15,8 @@ TARGETS= \
 	$(DISTDIR)/hello-threads.c \
 	$(DISTDIR)/hello-threads.html \
 	$(DISTDIR)/index.html \
+	$(DISTDIR)/inlining.c \
+	$(DISTDIR)/inlining.html \
 	$(DISTDIR)/stepping-with-state.c \
 	$(DISTDIR)/stepping-with-state.js \
 	$(DISTDIR)/stepping-with-state-sourcemaps.html \
@@ -48,6 +50,9 @@ $(DISTDIR)/hello.html: hello.c
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
+
+$(DISTDIR)/inlining.html: inlining.c
+	$(EMCC) -g -fdebug-compilation-dir=. -O1 -o $@ $<
 
 $(DISTDIR)/stepping-with-state.js: stepping-with-state.c
 	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
