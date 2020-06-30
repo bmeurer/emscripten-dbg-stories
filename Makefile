@@ -43,7 +43,8 @@ $(DISTDIR)/fibonacci.html: fibonacci.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/hello.html: hello.c
-	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
+	$(EMCC) -g -fdebug-compilation-dir=. -gseparate-dwarf=hello.debug.wasm -o $@ $<
+	mv hello.debug.wasm $(DISTDIR)
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
