@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inlining with source maps</title>
+  <script src="inlining-sourcemaps.js"></script>
+</head>
+<body>
+  <h1>Inlining</h1>
+  <p>
+    This tests that we can step in an intuitive way in source-mapped wasm code that includes inlining. 
+  </p>
+  <h2>Steps</h2>
+  <p>
+    <ol>
+      <li>Open DevTools</li>
+      <li>Locate the function <code>dsquare</code> from the <code>inlining.c</code> module and set a breakpoint on the <code>__attribute__((noinline)) int dsquare(int x, int y) {
+</code> line</li>
+      <li>A breakpoint should be set at the selected position</li>
+      <li>Reload the page</li>
+      <li>Breakpoint should hit the new breakpoint</li>
+      <li>Step multiple times. Stepping should eventually go to line <code>int dsq = square(x)</code>, enter the function <code>square</code>, go through it, and return at the line <code>int dsq = square(x);</code></li>
+      <li>Resume</li>
+    </ol>
+  </p>
+</body>
+</html>

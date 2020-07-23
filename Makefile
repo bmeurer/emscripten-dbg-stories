@@ -18,6 +18,7 @@ TARGETS= \
 	$(DISTDIR)/inlining.c \
 	$(DISTDIR)/inlining-dwarf.html \
 	$(DISTDIR)/inlining-sourcemaps.html \
+	$(DISTDIR)/inlining-sourcemaps.js \
 	$(DISTDIR)/stepping-with-state.c \
 	$(DISTDIR)/stepping-with-state.js \
 	$(DISTDIR)/stepping-with-state-sourcemaps.html \
@@ -54,7 +55,7 @@ $(DISTDIR)/hello-threads.html: hello-threads.c
 $(DISTDIR)/inlining-dwarf.html: inlining.c
 	$(EMCC) -g -fdebug-compilation-dir=. -O0 -o $@ $<
 
-$(DISTDIR)/inlining-sourcemaps.html: inlining.c
+$(DISTDIR)/inlining-sourcemaps.js: inlining.c
 	$(EMCC) -g4 --source-map-base $(SOURCE_MAP_BASE) -O0 -o $@ $<
 
 $(DISTDIR)/stepping-with-state.js: stepping-with-state.c
