@@ -12,6 +12,7 @@ TARGETS= \
 	$(DISTDIR)/fibonacci.html \
 	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
+	$(DISTDIR)/hello-separate-dwarf.html \
 	$(DISTDIR)/hello-threads.c \
 	$(DISTDIR)/hello-threads.html \
 	$(DISTDIR)/index.html \
@@ -48,6 +49,10 @@ $(DISTDIR)/fibonacci.html: fibonacci.c
 
 $(DISTDIR)/hello.html: hello.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
+
+$(DISTDIR)/hello-separate-dwarf.html: hello.c
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-separate-dwarf.debug.wasm -o $@ $<
+	mv hello-separate-dwarf.debug.wasm $(DISTDIR)
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
