@@ -17,6 +17,7 @@ TARGETS= \
 	$(DISTDIR)/hello-threads.html \
 	$(DISTDIR)/index.html \
 	$(DISTDIR)/inlining.c \
+	$(DISTDIR)/inlining-crbug-1113603.html \
 	$(DISTDIR)/inlining-dwarf.html \
 	$(DISTDIR)/inlining-sourcemaps.html \
 	$(DISTDIR)/inlining-sourcemaps.js \
@@ -56,6 +57,9 @@ $(DISTDIR)/hello-separate-dwarf.html: hello.c
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
+
+$(DISTDIR)/inlining-crbug-1113603.html: inlining.c
+	$(EMCC) -g -fdebug-compilation-dir=. -O1 -o $@ $<
 
 $(DISTDIR)/inlining-dwarf.html: inlining.c
 	$(EMCC) -g -fdebug-compilation-dir=. -O0 -o $@ $<
