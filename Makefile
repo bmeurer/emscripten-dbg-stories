@@ -11,6 +11,7 @@ TARGETS= \
 	$(DISTDIR)/crbug-887384.html \
 	$(DISTDIR)/fibonacci.c \
 	$(DISTDIR)/fibonacci.html \
+	$(DISTDIR)/fibonacci-proxytopthread.html \
 	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
 	$(DISTDIR)/hello-separate-dwarf.html \
@@ -28,6 +29,10 @@ TARGETS= \
 	$(DISTDIR)/stepping-with-state-and-threads.c \
 	$(DISTDIR)/stepping-with-state-and-threads.js \
 	$(DISTDIR)/stepping-with-state-and-threads-sourcemaps.html \
+	$(DISTDIR)/stepping-with-state-and-threads-sourcemaps-proxytopthread.js \
+	$(DISTDIR)/stepping-with-state-and-threads-sourcemaps-proxytopthread.html \
+	$(DISTDIR)/stepping-with-state-and-threads-proxytopthread.js \
+	$(DISTDIR)/stepping-with-state-and-threads-proxytopthread.html \
 	$(DISTDIR)/string.cc \
 	$(DISTDIR)/string.html
 
@@ -54,6 +59,9 @@ $(DISTDIR)/crbug-887384.html: crbug-887384.c
 $(DISTDIR)/fibonacci.html: fibonacci.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
 
+$(DISTDIR)/fibonacci-proxytopthread.html: fibonacci.c
+	$(EMCC) -g4 -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 --source-map-base $(SOURCE_MAP_BASE) -fdebug-compilation-dir=. -o $@ $<
+
 $(DISTDIR)/hello.html: hello.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
 
@@ -79,8 +87,17 @@ $(DISTDIR)/stepping-with-state.js: stepping-with-state.c
 $(DISTDIR)/stepping-with-state-and-threads.js: stepping-with-state-and-threads.c
 	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
 
+$(DISTDIR)/stepping-with-state-and-threads-sourcemaps-proxytopthread.js: stepping-with-state-and-threads.c
+	$(EMCC)  -g4 -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD --source-map-base $(SOURCE_MAP_BASE) -o $@ $<
+
+$(DISTDIR)/stepping-with-state-and-threads-proxytopthread.js: stepping-with-state-and-threads.c
+	$(EMCC)  -g -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD -fdebug-compilation-dir=. -s  -o $@ $<
+
 $(DISTDIR)/string.html: string.cc
 	$(EMXX) -g -fdebug-compilation-dir=. -O0 -o $@ $<
+
+$(DISTDIR)/stepping-with-state-and-threads-proxytopthread.html: stepping-with-state-and-threads-sourcemaps-proxytopthread.html
+	cp $< $@
 
 start: all
 	python3 -m http.server --directory $(DISTDIR) 4000
