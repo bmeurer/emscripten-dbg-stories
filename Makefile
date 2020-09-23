@@ -95,7 +95,7 @@ $(DISTDIR)/stepping-with-state-and-threads-sourcemaps-proxytopthread.js: steppin
 	$(EMCC)  -g4 -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD --source-map-base $(SOURCE_MAP_BASE) -o $@ $<
 
 $(DISTDIR)/stepping-with-state-and-threads-proxytopthread.js: stepping-with-state-and-threads.c
-	$(EMCC)  -g -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD -fdebug-compilation-dir=. -s  -o $@ $<
+	$(EMCC)  -g -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD -fdebug-compilation-dir=.  -o $@ $<
 
 $(DISTDIR)/string.html: string.cc
 	$(EMXX) -g -fno-limit-debug-info -fdebug-compilation-dir=. -O0 -o $@ $<
