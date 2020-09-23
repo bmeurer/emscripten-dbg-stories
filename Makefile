@@ -12,6 +12,7 @@ TARGETS= \
 	$(DISTDIR)/fibonacci.c \
 	$(DISTDIR)/fibonacci.html \
 	$(DISTDIR)/fibonacci-proxytopthread.html \
+	$(DISTDIR)/fibonacci-proxytopthread-sourcemaps.html \
 	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
 	$(DISTDIR)/hello-separate-dwarf.html \
@@ -59,8 +60,11 @@ $(DISTDIR)/crbug-887384.html: crbug-887384.c
 $(DISTDIR)/fibonacci.html: fibonacci.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
 
+$(DISTDIR)/fibonacci-proxytopthread-sourcemaps.html: fibonacci.c
+	$(EMCC) -g4 -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ $<
+
 $(DISTDIR)/fibonacci-proxytopthread.html: fibonacci.c
-	$(EMCC) -g4 -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 --source-map-base $(SOURCE_MAP_BASE) -fdebug-compilation-dir=. -o $@ $<
+	$(EMCC) -g -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/hello.html: hello.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
