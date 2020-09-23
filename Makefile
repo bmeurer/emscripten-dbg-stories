@@ -94,7 +94,7 @@ $(DISTDIR)/stepping-with-state-and-threads-proxytopthread.js: stepping-with-stat
 	$(EMCC)  -g -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD -fdebug-compilation-dir=. -s  -o $@ $<
 
 $(DISTDIR)/string.html: string.cc
-	$(EMXX) -g -fdebug-compilation-dir=. -O0 -o $@ $<
+	$(EMXX) -g -fno-limit-debug-info -fdebug-compilation-dir=. -O0 -o $@ $<
 
 $(DISTDIR)/stepping-with-state-and-threads-proxytopthread.html: stepping-with-state-and-threads-sourcemaps-proxytopthread.html
 	cp $< $@
