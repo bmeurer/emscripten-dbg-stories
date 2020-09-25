@@ -16,6 +16,7 @@ TARGETS= \
 	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
 	$(DISTDIR)/hello-separate-dwarf.html \
+	$(DISTDIR)/hello-separate-dwarf-broken.html \
 	$(DISTDIR)/hello-threads.c \
 	$(DISTDIR)/hello-threads.html \
 	$(DISTDIR)/index.html \
@@ -72,6 +73,9 @@ $(DISTDIR)/hello.html: hello.c
 $(DISTDIR)/hello-separate-dwarf.html: hello.c
 	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-separate-dwarf.debug.wasm -o $@ $<
 	mv hello-separate-dwarf.debug.wasm $(DISTDIR)
+
+$(DISTDIR)/hello-separate-dwarf-broken.html: hello.c
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-separate-dwarf-broken.debug.wasm -o $@ $<
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
