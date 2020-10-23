@@ -13,6 +13,8 @@ TARGETS= \
 	$(DISTDIR)/fibonacci.html \
 	$(DISTDIR)/fibonacci-proxytopthread.html \
 	$(DISTDIR)/fibonacci-proxytopthread-sourcemaps.html \
+	$(DISTDIR)/deep-call-stack-with-inlining.c \
+	$(DISTDIR)/deep-call-stack-with-inlining.html \
 	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
 	$(DISTDIR)/hello-separate-dwarf.html \
@@ -57,6 +59,9 @@ $(DISTDIR)/crbug-837572.html: crbug-837572.c
 
 $(DISTDIR)/crbug-887384.html: crbug-887384.c
 	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
+
+$(DISTDIR)/deep-call-stack-with-inlining.html: deep-call-stack-with-inlining.c
+	$(EMCC) -O0 -g -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/fibonacci.html: fibonacci.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
