@@ -11,6 +11,8 @@ TARGETS= \
 	$(DISTDIR)/crbug-887384.html \
 	$(DISTDIR)/crbug-1141330.c \
 	$(DISTDIR)/crbug-1141330.html \
+	$(DISTDIR)/crbug-1150303.c \
+	$(DISTDIR)/crbug-1150303.html \
 	$(DISTDIR)/fibonacci.c \
 	$(DISTDIR)/fibonacci.html \
 	$(DISTDIR)/fibonacci-proxytopthread.html \
@@ -64,6 +66,9 @@ $(DISTDIR)/crbug-887384.html: crbug-887384.c
 
 $(DISTDIR)/crbug-1141330.html: crbug-1141330.c
 	$(EMCC) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
+
+$(DISTDIR)/crbug-1150303.html: crbug-1150303.c
+	$(EMCC) -O0 -g -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/deep-call-stack-with-inlining.html: deep-call-stack-with-inlining.c
 	$(EMCC) -O0 -g -fdebug-compilation-dir=. -o $@ $<
