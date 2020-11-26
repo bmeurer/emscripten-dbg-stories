@@ -2,7 +2,7 @@
 
 int fib(int n) {
   int a, b = 0, c = 1;
-  while (--n > 0) {
+  for (int i = 0; i < n; ++i) {
     a = b;
     b = c;
     c = a + b;
