@@ -43,7 +43,9 @@ TARGETS= \
 	$(DISTDIR)/stepping-with-state-and-threads-proxytopthread.js \
 	$(DISTDIR)/stepping-with-state-and-threads-proxytopthread.html \
 	$(DISTDIR)/string.cc \
-	$(DISTDIR)/string.html
+	$(DISTDIR)/string.html \
+	$(DISTDIR)/tail-call-inlining.c \
+	$(DISTDIR)/tail-call-inlining.html
 
 all: $(DISTDIR) $(TARGETS)
 
@@ -125,6 +127,9 @@ $(DISTDIR)/string.html: string.cc
 
 $(DISTDIR)/stepping-with-state-and-threads-proxytopthread.html: stepping-with-state-and-threads-sourcemaps-proxytopthread.html
 	cp $< $@
+
+$(DISTDIR)/tail-call-inlining.html: tail-call-inlining.c
+	$(EMCC) -g -fdebug-compilation-dir=. -O0 -o $@ $<
 
 start: all
 	python3 -m http.server --directory $(DISTDIR) 4000
