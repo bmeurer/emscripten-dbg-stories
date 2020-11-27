@@ -25,6 +25,7 @@ TARGETS= \
 	$(DISTDIR)/hello-separate-dwarf-broken.html \
 	$(DISTDIR)/hello-threads.c \
 	$(DISTDIR)/hello-threads.html \
+	$(DISTDIR)/hello-windows.html \
 	$(DISTDIR)/index.html \
 	$(DISTDIR)/inlining.c \
 	$(DISTDIR)/inlining-crbug-1113603.html \
@@ -94,6 +95,9 @@ $(DISTDIR)/hello-separate-dwarf-broken.html: hello.c
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
+
+$(DISTDIR)/hello-windows.html: hello.c
+	$(EMCC) -g -fdebug-compilation-dir=c:\\src -o $@ $<
 
 $(DISTDIR)/inlining-crbug-1113603.html: inlining.c
 	$(EMCC) -g -fdebug-compilation-dir=. -O1 -o $@ $<
