@@ -15,12 +15,14 @@ TARGETS= \
 	$(DISTDIR)/crbug-1150303.html \
 	$(DISTDIR)/crbug-1153644.c \
 	$(DISTDIR)/crbug-1153644.html \
+	$(DISTDIR)/deep-call-stack-with-inlining.c \
+	$(DISTDIR)/deep-call-stack-with-inlining.html \
 	$(DISTDIR)/fibonacci.c \
 	$(DISTDIR)/fibonacci.html \
 	$(DISTDIR)/fibonacci-proxytopthread.html \
 	$(DISTDIR)/fibonacci-proxytopthread-sourcemaps.html \
-	$(DISTDIR)/deep-call-stack-with-inlining.c \
-	$(DISTDIR)/deep-call-stack-with-inlining.html \
+	$(DISTDIR)/globals.cc \
+	$(DISTDIR)/globals.html \
 	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
 	$(DISTDIR)/hello-separate-dwarf.html \
@@ -91,6 +93,9 @@ $(DISTDIR)/fibonacci-proxytopthread-sourcemaps.html: fibonacci.c
 
 $(DISTDIR)/fibonacci-proxytopthread.html: fibonacci.c
 	$(EMCC) -g -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 -fdebug-compilation-dir=. -o $@ $<
+
+$(DISTDIR)/globals.html: globals.cc
+	$(EMXX) -g -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/hello.html: hello.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
