@@ -19,6 +19,8 @@ TARGETS= \
 	$(DISTDIR)/deep-call-stack-with-inlining.html \
 	$(DISTDIR)/fibonacci.c \
 	$(DISTDIR)/fibonacci.html \
+	$(DISTDIR)/fibonacci-O1.html \
+	$(DISTDIR)/fibonacci-O2.html \
 	$(DISTDIR)/fibonacci-proxytopthread.html \
 	$(DISTDIR)/fibonacci-proxytopthread-sourcemaps.html \
 	$(DISTDIR)/globals.cc \
@@ -87,6 +89,12 @@ $(DISTDIR)/deep-call-stack-with-inlining.html: deep-call-stack-with-inlining.c
 
 $(DISTDIR)/fibonacci.html: fibonacci.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
+
+$(DISTDIR)/fibonacci-O1.html: fibonacci.c
+	$(EMCC) -O1 -g -fdebug-compilation-dir=. -o $@ $<
+
+$(DISTDIR)/fibonacci-O2.html: fibonacci.c
+	$(EMCC) -O2 -g -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/fibonacci-proxytopthread-sourcemaps.html: fibonacci.c
 	$(EMCC) -g4 -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ $<
