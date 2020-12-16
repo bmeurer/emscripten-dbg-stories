@@ -44,6 +44,8 @@ TARGETS= \
 	$(DISTDIR)/inlining-sourcemaps.js \
 	$(DISTDIR)/mandelbrot.cc \
 	$(DISTDIR)/mandelbrot.html \
+	$(DISTDIR)/simd.c \
+	$(DISTDIR)/simd.html \
 	$(DISTDIR)/stepping-with-state.c \
 	$(DISTDIR)/stepping-with-state.js \
 	$(DISTDIR)/stepping-with-state-sourcemaps.html \
@@ -142,6 +144,9 @@ $(DISTDIR)/inlining-sourcemaps.js: inlining.c
 
 $(DISTDIR)/mandelbrot.html: mandelbrot.cc
 	$(EMXX) -g -s USE_SDL=2 -s ALLOW_MEMORY_GROWTH=1 -fdebug-compilation-dir=. -o $@ $<
+
+$(DISTDIR)/simd.html: simd.c
+	$(EMCC) -g -msimd128 -fdebug-compilation-dir=. -o $@ ./$<
 
 $(DISTDIR)/stepping-with-state.js: stepping-with-state.c
 	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
