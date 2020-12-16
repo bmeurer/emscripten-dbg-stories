@@ -17,6 +17,10 @@ TARGETS= \
 	$(DISTDIR)/crbug-1153644.html \
 	$(DISTDIR)/deep-call-stack-with-inlining.c \
 	$(DISTDIR)/deep-call-stack-with-inlining.html \
+	$(DISTDIR)/diverse-inlining.h \
+	$(DISTDIR)/diverse-inlining.html \
+	$(DISTDIR)/diverse-inlining-extern.c \
+	$(DISTDIR)/diverse-inlining-main.c \
 	$(DISTDIR)/fibonacci.c \
 	$(DISTDIR)/fibonacci.html \
 	$(DISTDIR)/fibonacci-O1.html \
@@ -63,6 +67,9 @@ $(DISTDIR):
 $(DISTDIR)/%.html: %.html
 	cp $< $@
 
+$(DISTDIR)/%.h: %.h
+	cp $< $@
+
 $(DISTDIR)/%.c: %.c
 	cp $< $@
 
@@ -86,6 +93,9 @@ $(DISTDIR)/crbug-1153644.html: crbug-1153644.c
 
 $(DISTDIR)/deep-call-stack-with-inlining.html: deep-call-stack-with-inlining.c
 	$(EMCC) -O0 -g -fdebug-compilation-dir=. -o $@ $<
+
+$(DISTDIR)/diverse-inlining.html: diverse-inlining-extern.c diverse-inlining-main.c
+	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $^
 
 $(DISTDIR)/fibonacci.html: fibonacci.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
