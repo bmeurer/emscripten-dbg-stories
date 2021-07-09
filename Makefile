@@ -2,6 +2,8 @@ EMCC?=emcc
 EMXX?=em++
 PORT?=4000
 SOURCE_MAP_BASE?=http://localhost:$(PORT)/
+LLVMDWP?=llvm-dwp
+EMCCDWARF5FLAGS=-gsplit-dwarf -gdwarf-5 -gpubnames -sWASM_BIGINT -sERROR_ON_WASM_CHANGES_AFTER_LINK -sREVERSE_DEPS=all
 
 DISTDIR=dist
 TARGETS= \
@@ -31,8 +33,11 @@ TARGETS= \
 	$(DISTDIR)/globals.html \
 	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
+	$(DISTDIR)/hello-no-symbols.html \
 	$(DISTDIR)/hello-separate-dwarf.html \
 	$(DISTDIR)/hello-separate-dwarf-broken.html \
+	$(DISTDIR)/hello-split-dwarf-dwp.html \
+	$(DISTDIR)/hello-split-dwarf-missing-dwp.html \
 	$(DISTDIR)/hello-threads.c \
 	$(DISTDIR)/hello-threads.html \
 	$(DISTDIR)/hello-windows.html \
@@ -122,12 +127,25 @@ $(DISTDIR)/globals.html: globals.cc
 $(DISTDIR)/hello.html: hello.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
 
+$(DISTDIR)/hello-no-symbols.html: hello.c
+	$(EMCC) -o $@ $<
+
 $(DISTDIR)/hello-separate-dwarf.html: hello.c
 	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-separate-dwarf.debug.wasm -o $@ $<
 	mv hello-separate-dwarf.debug.wasm $(DISTDIR)
 
 $(DISTDIR)/hello-separate-dwarf-broken.html: hello.c
-	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-separate-dwarf-broken.debug.wasm -o $@ $<
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-separate-dwarf-broken.debug.wasm -o $@ $<
+
+$(DISTDIR)/hello-split-dwarf-dwp.html: hello.c
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-split-dwarf-dwp.debug.wasm $(EMCCDWARF5FLAGS) -o $@ $<
+	$(LLVMDWP) -e=hello-split-dwarf-dwp.debug.wasm -o=hello-split-dwarf-dwp.debug.wasm.dwp
+	mv hello-split-dwarf-dwp.debug.wasm $(DISTDIR)
+	mv hello-split-dwarf-dwp.debug.wasm.dwp $(DISTDIR)
+
+$(DISTDIR)/hello-split-dwarf-missing-dwp.html: hello.c
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-split-dwarf-missing-dwp.debug.wasm $(EMCCDWARF5FLAGS) -o $@ $<
+	mv hello-split-dwarf-missing-dwp.debug.wasm $(DISTDIR)
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
@@ -179,3 +197,4 @@ start: all
 
 clean:
 	@rm -rf $(DISTDIR)
+	rm *.dwo
