@@ -9,5 +9,6 @@ TEMPDIR=`mktemp -d`
  ./emsdk install ${EMSCRIPTEN_VERSION} &&
  ./emsdk activate ${EMSCRIPTEN_VERSION}) || exit $?
 source ${TEMPDIR}/emsdk/emsdk_env.sh
+export LLVMDWP=${TEMPDIR}/emsdk/upstream/bin/llvm-dwp
 make || exit $?
 rm -rf ${TEMPDIR}
