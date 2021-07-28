@@ -81,10 +81,10 @@ $(DISTDIR)/%.cc: %.cc
 	cp $< $@
 
 $(DISTDIR)/crbug-837572.html: crbug-837572.c
-	$(EMCC) -g4 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
+	$(EMCC) -gsource-map --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
 
 $(DISTDIR)/crbug-887384.html: crbug-887384.c
-	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
+	$(EMCC) -gsource-map -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
 
 $(DISTDIR)/crbug-1141330.html: crbug-1141330.c
 	$(EMCC) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
@@ -111,7 +111,7 @@ $(DISTDIR)/fibonacci-O2.html: fibonacci.c
 	$(EMCC) -O2 -g -fdebug-compilation-dir=. -o $@ $<
 
 $(DISTDIR)/fibonacci-proxytopthread-sourcemaps.html: fibonacci.c
-	$(EMCC) -g4 -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ $<
+	$(EMCC) -gsource-map -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ $<
 
 $(DISTDIR)/fibonacci-proxytopthread.html: fibonacci.c
 	$(EMCC) -g -s PROXY_TO_PTHREAD -s USE_PTHREADS=1 -fdebug-compilation-dir=. -o $@ $<
@@ -142,7 +142,7 @@ $(DISTDIR)/inlining-dwarf.html: inlining.c
 	$(EMCC) -g -fdebug-compilation-dir=. -O0 -o $@ $<
 
 $(DISTDIR)/inlining-sourcemaps.js: inlining.c
-	$(EMCC) -g4 --source-map-base $(SOURCE_MAP_BASE) -O0 -o $@ $<
+	$(EMCC) -gsource-map --source-map-base $(SOURCE_MAP_BASE) -O0 -o $@ $<
 
 $(DISTDIR)/lmi.html: lmi.cc
 	$(EMXX) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
@@ -154,13 +154,13 @@ $(DISTDIR)/simd.html: simd.c
 	$(EMCC) -g -msimd128 -fdebug-compilation-dir=. -o $@ ./$<
 
 $(DISTDIR)/stepping-with-state.js: stepping-with-state.c
-	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
+	$(EMCC) -gsource-map --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
 
 $(DISTDIR)/stepping-with-state-and-threads.js: stepping-with-state-and-threads.c
-	$(EMCC) -g4 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
+	$(EMCC) -gsource-map -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=1 --source-map-base $(SOURCE_MAP_BASE) -o $@ ./$<
 
 $(DISTDIR)/stepping-with-state-and-threads-sourcemaps-proxytopthread.js: stepping-with-state-and-threads.c
-	$(EMCC)  -g4 -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD --source-map-base $(SOURCE_MAP_BASE) -o $@ $<
+	$(EMCC)  -gsource-map -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD --source-map-base $(SOURCE_MAP_BASE) -o $@ $<
 
 $(DISTDIR)/stepping-with-state-and-threads-proxytopthread.js: stepping-with-state-and-threads.c
 	$(EMCC)  -g -s USE_PTHREADS=1 -s PROXY_TO_PTHREAD -fdebug-compilation-dir=.  -o $@ $<
