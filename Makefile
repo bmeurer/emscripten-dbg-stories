@@ -3,7 +3,8 @@ EMXX?=em++
 PORT?=4000
 SOURCE_MAP_BASE?=http://localhost:$(PORT)/
 LLVMDWP?=llvm-dwp
-EMCCDWARF5FLAGS=-gsplit-dwarf -gdwarf-5 -gpubnames -sWASM_BIGINT -sERROR_ON_WASM_CHANGES_AFTER_LINK -sREVERSE_DEPS=all
+EMCCDWARF5COMPILEFLAGS=-gsplit-dwarf -gdwarf-5 -gpubnames
+EMCCDWARF5FLAGS=$(EMCCDWARF5COMPILEFLAGS) -sWASM_BIGINT -sERROR_ON_WASM_CHANGES_AFTER_LINK -sREVERSE_DEPS=all
 
 DISTDIR=dist
 TARGETS= \
@@ -17,6 +18,8 @@ TARGETS= \
 	$(DISTDIR)/crbug-1150303.html \
 	$(DISTDIR)/crbug-1153644.c \
 	$(DISTDIR)/crbug-1153644.html \
+	$(DISTDIR)/crbug-1234784.cc \
+	$(DISTDIR)/crbug-1234784.html \
 	$(DISTDIR)/deep-call-stack-with-inlining.c \
 	$(DISTDIR)/deep-call-stack-with-inlining.html \
 	$(DISTDIR)/diverse-inlining.h \
@@ -37,6 +40,7 @@ TARGETS= \
 	$(DISTDIR)/hello-separate-dwarf.html \
 	$(DISTDIR)/hello-separate-dwarf-broken.html \
 	$(DISTDIR)/hello-split-dwarf-dwp.html \
+	$(DISTDIR)/hello-split-dwarf-dwo.html \
 	$(DISTDIR)/hello-split-dwarf-missing-dwp.html \
 	$(DISTDIR)/hello-threads.c \
 	$(DISTDIR)/hello-threads.html \
@@ -136,16 +140,24 @@ $(DISTDIR)/hello-separate-dwarf.html: hello.c
 
 $(DISTDIR)/hello-separate-dwarf-broken.html: hello.c
 	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-separate-dwarf-broken.debug.wasm -o $@ $<
+	rm hello-separate-dwarf-broken.debug.wasm
 
 $(DISTDIR)/hello-split-dwarf-dwp.html: hello.c
-	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-split-dwarf-dwp.debug.wasm $(EMCCDWARF5FLAGS) -o $@ $<
-	$(LLVMDWP) -e=hello-split-dwarf-dwp.debug.wasm -o=hello-split-dwarf-dwp.debug.wasm.dwp
-	mv hello-split-dwarf-dwp.debug.wasm $(DISTDIR)
-	mv hello-split-dwarf-dwp.debug.wasm.dwp $(DISTDIR)
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-split-dwarf-dwp.debug.wasm $(EMCCDWARF5COMPILEFLAGS) -c -o hello-split-dwarf-dwp.o $<
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-split-dwarf-dwp.debug.wasm $(EMCCDWARF5FLAGS) -o $@ hello-split-dwarf-dwp.o
+	$(LLVMDWP) -e=$(DISTDIR)/hello-split-dwarf-dwp.debug.wasm -o=$(DISTDIR)/hello-split-dwarf-dwp.debug.wasm.dwp
+	rm hello-split-dwarf-dwp.o hello-split-dwarf-dwp.dwo
+
+$(DISTDIR)/hello-split-dwarf-dwo.html: hello.c
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-split-dwarf-dwo.debug.wasm $(EMCCDWARF5COMPILEFLAGS) -c -o hello-split-dwarf-dwo.o $<
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-split-dwarf-dwo.debug.wasm $(EMCCDWARF5FLAGS) -o $@ hello-split-dwarf-dwo.o
+	mv hello-split-dwarf-dwo.dwo $(DISTDIR)
+	rm hello-split-dwarf-dwo.o
 
 $(DISTDIR)/hello-split-dwarf-missing-dwp.html: hello.c
-	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=hello-split-dwarf-missing-dwp.debug.wasm $(EMCCDWARF5FLAGS) -o $@ $<
-	mv hello-split-dwarf-missing-dwp.debug.wasm $(DISTDIR)
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-split-dwarf-missing-dwp.debug.wasm $(EMCCDWARF5COMPILEFLAGS) -c -o hello-split-dwarf-missing-dwp.o $<
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-split-dwarf-missing-dwp.debug.wasm $(EMCCDWARF5FLAGS) -o $@ hello-split-dwarf-missing-dwp.o
+	rm hello-split-dwarf-missing-dwp.o hello-split-dwarf-missing-dwp.dwo
 
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
@@ -186,6 +198,11 @@ $(DISTDIR)/stepping-with-state-and-threads-proxytopthread.js: stepping-with-stat
 $(DISTDIR)/string.html: string.cc
 	$(EMXX) -g -fno-limit-debug-info -fdebug-compilation-dir=. -O0 -o $@ $<
 
+$(DISTDIR)/crbug-1234784.html: crbug-1234784.cc
+	$(EMXX) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/crbug-1234784.debug.wasm $(EMCCDWARF5FLAGS) -O1 -o $@ $<
+	$(LLVMDWP) -e=$(DISTDIR)/crbug-1234784.debug.wasm -o=$(DISTDIR)/crbug-1234784.debug.wasm.dwp
+	rm crbug-1234784.dwo
+
 $(DISTDIR)/stepping-with-state-and-threads-proxytopthread.html: stepping-with-state-and-threads-sourcemaps-proxytopthread.html
 	cp $< $@
 
@@ -196,5 +213,4 @@ start: all
 	python3 -m http.server --directory $(DISTDIR) 4000
 
 clean:
-	@rm -rf $(DISTDIR)
-	rm *.dwo
+	@rm -rf $(DISTDIR) *.dwo *.o
