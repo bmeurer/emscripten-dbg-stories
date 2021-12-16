@@ -42,6 +42,8 @@ TARGETS= \
 	$(DISTDIR)/hello-split-dwarf-dwp.html \
 	$(DISTDIR)/hello-split-dwarf-dwo.html \
 	$(DISTDIR)/hello-split-dwarf-missing-dwp.html \
+	$(DISTDIR)/hello-subdirectory.html \
+	$(DISTDIR)/hello-subdirectory.c \
 	$(DISTDIR)/hello-threads.c \
 	$(DISTDIR)/hello-threads.html \
 	$(DISTDIR)/hello-windows.html \
@@ -159,6 +161,16 @@ $(DISTDIR)/hello-split-dwarf-missing-dwp.html: hello.c
 	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-split-dwarf-missing-dwp.debug.wasm $(EMCCDWARF5FLAGS) -o $@ hello-split-dwarf-missing-dwp.o
 	rm hello-split-dwarf-missing-dwp.o hello-split-dwarf-missing-dwp.dwo
 
+$(DISTDIR)/hello-subdirectory.html: hello-subdirectory.c subdirectory/subsub/subsub.c
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-subdirectory.debug.wasm $(EMCCDWARF5COMPILEFLAGS) -c -o hello-subdirectory.o hello-subdirectory.c
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-subdirectory.debug.wasm $(EMCCDWARF5COMPILEFLAGS) -c -o subdirectory/subsub/subsub.o subdirectory/subsub/subsub.c
+	$(EMCC) -fdebug-compilation-dir=. -gseparate-dwarf=$(DISTDIR)/hello-subdirectory.debug.wasm $(EMCCDWARF5FLAGS) -o $@ hello-subdirectory.o subdirectory/subsub/subsub.o
+	mv hello-subdirectory.dwo $(DISTDIR)
+	mkdir -p $(DISTDIR)/subdirectory/subsub
+	mv subdirectory/subsub/subsub.dwo $(DISTDIR)/subdirectory/subsub/
+	cp subdirectory/subsub/subsub.c $(DISTDIR)/subdirectory/subsub/
+	rm hello-subdirectory.o subdirectory/subsub/subsub.o
+
 $(DISTDIR)/hello-threads.html: hello-threads.c
 	$(EMCC) -g -fdebug-compilation-dir=. -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 -o $@ $<
 
@@ -213,4 +225,4 @@ start: all
 	python3 -m http.server --directory $(DISTDIR) 4000
 
 clean:
-	@rm -rf $(DISTDIR) *.dwo *.o
+	@rm -rf $(DISTDIR) *.dwo *.o subdirectory/subsub/*.dwo subdirectory/subsub/*.o
