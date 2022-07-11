@@ -53,6 +53,10 @@ TARGETS= \
 	$(DISTDIR)/inlining-sourcemaps.js \
 	$(DISTDIR)/lmi.cc \
 	$(DISTDIR)/lmi.html \
+	$(DISTDIR)/lmi-primitives.cc \
+	$(DISTDIR)/lmi-primitives.html \
+	$(DISTDIR)/lmi-structs.cc \
+	$(DISTDIR)/lmi-structs.html \
 	$(DISTDIR)/mandelbrot.cc \
 	$(DISTDIR)/mandelbrot.html \
 	$(DISTDIR)/simd.c \
@@ -175,6 +179,12 @@ $(DISTDIR)/inlining-sourcemaps.js: inlining.c
 	$(EMCC) -gsource-map --source-map-base $(SOURCE_MAP_BASE) -O0 -o $@ $<
 
 $(DISTDIR)/lmi.html: lmi.cc
+	$(EMXX) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
+
+$(DISTDIR)/lmi-primitives.html: lmi-primitives.cc
+	$(EMXX) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
+
+$(DISTDIR)/lmi-structs.html: lmi-structs.cc
 	$(EMXX) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
 
 $(DISTDIR)/mandelbrot.html: mandelbrot.cc
