@@ -9,14 +9,14 @@ struct movie {
 
 class MovieReview {
   public:
-    movie mov;
+    movie *mov;
     std::string review;
     int rating;
     void printMovieRating() {
-      std::cout << this->mov.title << ": " << this->rating << "/5" << "\n";
+      std::cout << this->mov->title << ": " << this->rating << "/5" << "\n";
     }
     
-    MovieReview(movie m, std::string review, int rating) {
+    MovieReview(movie *m, std::string review, int rating) {
       this->mov = m;
       this->review = review;
       this->rating = rating;
@@ -29,15 +29,17 @@ int main() {
   stargate.year_released = 2008;
   stargate.budget = 7000000;
 
-  MovieReview stargateReview(stargate, "The best thing since sliced bread.", 5);
+  MovieReview stargateReview(&stargate, "The best thing since sliced bread.", 5);
   stargateReview.printMovieRating();
   
   // Added for testing double pointers.
-  movie *ptr = &stargate;
-  movie **dblptr = &ptr;
-  MovieReview *reviewptr = &stargateReview;
-  MovieReview **reviewdblptr = &reviewptr;
-
+  {
+    movie *ptr = &stargate;
+    movie **dblptr = &ptr;
+    MovieReview *reviewptr = &stargateReview;
+    MovieReview **reviewdblptr = &reviewptr;
+    std::cout << "put a break point here for testing double pointers" << "\n";
+  }
 
   return 0;
 }
