@@ -3,22 +3,41 @@
 
 struct movie {
   std::string title;
-  int rating;
+  int year_released;
+  int budget;
 };
 
-void printMovie(movie &m) {
-  std::cout << m.title << ": " << m.rating << "\n";
-}
+class MovieReview {
+  public:
+    movie mov;
+    std::string review;
+    int rating;
+    void printMovieRating() {
+      std::cout << this->mov.title << ": " << this->rating << "/5" << "\n";
+    }
+    
+    MovieReview(movie m, std::string review, int rating) {
+      this->mov = m;
+      this->review = review;
+      this->rating = rating;
+    }
+};
 
 int main() {
   movie stargate;
   stargate.title = "Star Gate Continuum";
-  stargate.rating = 5;
-  printMovie(stargate);
+  stargate.year_released = 2008;
+  stargate.budget = 7000000;
+
+  MovieReview stargateReview(stargate, "The best thing since sliced bread.", 5);
+  stargateReview.printMovieRating();
   
   // Added for testing double pointers.
   movie *ptr = &stargate;
   movie **dblptr = &ptr;
+  MovieReview *reviewptr = &stargateReview;
+  MovieReview **reviewdblptr = &reviewptr;
+
 
   return 0;
 }
