@@ -17,5 +17,9 @@ int main() {
   double d = 123.456;
   wchar_t w = L'A';
   
+  // Added for testing double pointers.
+  double *ptr = &d;
+  double **dblptr = &ptr;
+  
   usePrimitives(i, c, b, f, d, w);
 }

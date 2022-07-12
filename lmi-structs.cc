@@ -11,9 +11,14 @@ void printMovie(movie &m) {
 }
 
 int main() {
-  movie amovie;
-  amovie.title = "Star Gate Continuum";
-  amovie.rating = 5;
-  printMovie(amovie);
+  movie stargate;
+  stargate.title = "Star Gate Continuum";
+  stargate.rating = 5;
+  printMovie(stargate);
+  
+  // Added for testing double pointers.
+  movie *ptr = &stargate;
+  movie **dblptr = &ptr;
+
   return 0;
 }
