@@ -15,7 +15,7 @@ class MovieReview {
     void printMovieRating() {
       std::cout << this->mov->title << ": " << this->rating << "/5" << "\n";
     }
-    
+
     MovieReview(movie *m, std::string review, int rating) {
       this->mov = m;
       this->review = review;
@@ -38,7 +38,8 @@ int main() {
     movie **dblptr = &ptr;
     MovieReview *reviewptr = &stargateReview;
     MovieReview **reviewdblptr = &reviewptr;
-    std::cout << "put a break point here for testing double pointers" << "\n";
+    std::cout << "ptr: "<< ptr << ", dblptr: " << dblptr << "\n";
+    std::cout << "reviewptr: "<< reviewptr << ", reviewdblptr: " << reviewdblptr << "\n";
   }
 
   return 0;
