@@ -55,8 +55,8 @@ TARGETS= \
 	$(DISTDIR)/lmi.html \
 	$(DISTDIR)/lmi-primitives.cc \
 	$(DISTDIR)/lmi-primitives.html \
-	$(DISTDIR)/lmi-structs.cc \
-	$(DISTDIR)/lmi-structs.html \
+	$(DISTDIR)/lmi-structs-classes.cc \
+	$(DISTDIR)/lmi-structs-classes.html \
 	$(DISTDIR)/mandelbrot.cc \
 	$(DISTDIR)/mandelbrot.html \
 	$(DISTDIR)/simd.c \
@@ -184,7 +184,7 @@ $(DISTDIR)/lmi.html: lmi.cc
 $(DISTDIR)/lmi-primitives.html: lmi-primitives.cc
 	$(EMXX) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
 
-$(DISTDIR)/lmi-structs.html: lmi-structs.cc
+$(DISTDIR)/lmi-structs-classes.html: lmi-structs-classes.cc
 	$(EMXX) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
 
 $(DISTDIR)/mandelbrot.html: mandelbrot.cc
