@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Repro for hitting breakpoints in C/C++ files</title>
+    <script src="instrumentation-breakpoints.js"></script>
+  </head>
+  <body>
+    <h1>Repro for hitting breakpoints in C/C++ files</h1>
+    <h2>Hitting breakpoints upon initial load (no back-end state)</h2>
+    <h3 id="js-initial">Breakpoint on C++ file</h3>
+    <p>
+      This test illustrates the problem that DevTools does not always manage to set breakpoints in time for debugging C/C++ files
+      using the DWARF extension. In each of these cases, we should reliably hit a breakpoint at the end of the steps.
+    </p>
+    <h4>Steps</h4>
+    <p>
+      <ol>
+        <li>Open DevTools with the C/C++ DWARF Extension enabled</li>
+        <li>Set a breakpoint in <code>instrumentation-breakpoints.cc</code></li>
+        <li>Open a new tab and open DevTools</li>
+        <li>Navigate to this page</li>
+        <li>Breakpoint should hit</li>
+      </ol>
+    </p>
+
+  <h2>Hitting breakpoints on reload (back-end state available)</h2>
+    This test is the same as the test before, but are based on reloading (i.e. we have loaded this page within the same tab already once).
+    <h3 id="ts-reload">Breakpoint on C++ file</h3>
+    <p>
+      This test illustrates the problem that DevTools does not always manage to set breakpoints in time for debugging C/C++ files when reloading the page.
+
+    </p>
+    <h4>Steps</h4>
+    <p>
+      <ol>
+        <li>Open DevTools with the C/C++ DWARF Extension enabled</li>
+        <li>Set a breakpoint in <code>instrumentation-breakpoints.cc</code></li>
+        <li>Reload</li>
+        <li>Breakpoint should hit</li>
+      </ol>
+    </p>
+
+  </body>
+</html>

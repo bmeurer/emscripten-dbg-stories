@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EMSCRIPTEN_VERSION="2.0.26"
+EMSCRIPTEN_VERSION="3.1.14"
 
 TEMPDIR=`mktemp -d`
 (cd ${TEMPDIR} &&

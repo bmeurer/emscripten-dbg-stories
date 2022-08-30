@@ -51,6 +51,9 @@ TARGETS= \
 	$(DISTDIR)/inlining-dwarf.html \
 	$(DISTDIR)/inlining-sourcemaps.html \
 	$(DISTDIR)/inlining-sourcemaps.js \
+	$(DISTDIR)/instrumentation-breakpoints.html \
+	$(DISTDIR)/instrumentation-breakpoints.cc \
+	$(DISTDIR)/instrumentation-breakpoints.js \
 	$(DISTDIR)/lmi.cc \
 	$(DISTDIR)/lmi.html \
 	$(DISTDIR)/lmi-primitives.cc \
@@ -177,6 +180,9 @@ $(DISTDIR)/inlining-dwarf.html: inlining.c
 
 $(DISTDIR)/inlining-sourcemaps.js: inlining.c
 	$(EMCC) -gsource-map --source-map-base $(SOURCE_MAP_BASE) -O0 -o $@ $<
+
+$(DISTDIR)/instrumentation-breakpoints.js: instrumentation-breakpoints.cc
+	$(EMXX) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
 
 $(DISTDIR)/lmi.html: lmi.cc
 	$(EMXX) -g -O0 -fdebug-compilation-dir=. -o $@ ./$<
