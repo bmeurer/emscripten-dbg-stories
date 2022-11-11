@@ -225,6 +225,9 @@ $(DISTDIR)/stepping-with-state-and-threads-proxytopthread.html: stepping-with-st
 $(DISTDIR)/tail-call-inlining.html: tail-call-inlining.c
 	$(EMCC) -g -fdebug-compilation-dir=. -O0 -o $@ $<
 
+$(DISTDIR)/netlify.toml: netlify.toml
+	cp $< $@
+
 start: all
 	python3 -m http.server --directory $(DISTDIR) 4000
 
