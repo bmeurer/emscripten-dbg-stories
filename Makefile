@@ -36,6 +36,8 @@ TARGETS= \
 	$(DISTDIR)/globals.html \
 	$(DISTDIR)/hello.c \
 	$(DISTDIR)/hello.html \
+	$(DISTDIR)/hello-sourcemap.html \
+	$(DISTDIR)/hello-sourcemap-and-dwarf.html \
 	$(DISTDIR)/hello-no-symbols.html \
 	$(DISTDIR)/hello-separate-dwarf.html \
 	$(DISTDIR)/hello-separate-dwarf-broken.html \
@@ -137,6 +139,12 @@ $(DISTDIR)/globals.html: globals.cc
 
 $(DISTDIR)/hello.html: hello.c
 	$(EMCC) -g -fdebug-compilation-dir=. -o $@ $<
+
+$(DISTDIR)/hello-sourcemap-and-dwarf.html: hello.c
+	$(EMCC) -gsource-map --source-map-base $(SOURCE_MAP_BASE) -g -fdebug-compilation-dir=. -o $@ $<
+
+$(DISTDIR)/hello-sourcemap.html: hello.c
+	$(EMCC) -gsource-map --source-map-base $(SOURCE_MAP_BASE)  -o $@ $<
 
 $(DISTDIR)/hello-no-symbols.html: hello.c
 	$(EMCC) -o $@ $<
